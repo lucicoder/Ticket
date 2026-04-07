@@ -1,19 +1,22 @@
-// server.js - Backend server using SendGrid Mail API for emails
+// server.js - Backend server for sending emails using SendGrid
 const express = require('express');
 const cors = require('cors');
-require('dotenv').config();
-
 const sgMail = require('@sendgrid/mail');
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.static('.')); // Serve static files from current directory
+app.use(express.static('.'));
 
-// SendGrid email sending endpoint
+// Configure SendGrid
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+console.log('SendGrid configured, ready to send emails');
+
+// Email sending endpoint
 app.post('/api/send-ticket-email', async (req, res) => {
     try {
         const {
@@ -27,10 +30,7 @@ app.post('/api/send-ticket-email', async (req, res) => {
         } = req.body;
 
         if (!userEmail || !userName || !bookingId) {
-            return res.status(400).json({
-                success: false,
-                error: 'Missing required fields'
-            });
+            return res.status(400).json({ success: false, error: 'Missing required fields' });
         }
 
         const ticketUrl = `${req.protocol}://${req.get('host')}/ticket.html?bookingId=${encodeURIComponent(bookingId)}`;
@@ -38,7 +38,7 @@ app.post('/api/send-ticket-email', async (req, res) => {
         const msg = {
             to: userEmail,
             from: {
-                email: process.env.SENDGRID_FROM,
+                email: process.env.SENDGRID_FROM_EMAIL,
                 name: 'Digital Museum, Assam Legislative Assembly'
             },
             subject: 'Ticket Confirmation - Digital Museum, Assam Legislative Assembly',
@@ -83,16 +83,13 @@ app.post('/api/send-ticket-email', async (req, res) => {
                                 <ul>
                                     <li>All visitors will be provided entry from Gate No.14, Assam Legislative Assembly.</li>
                                     <li>All visitors must report at Gate No.14 at least 15 minutes before the allotted time slot.</li>
-                                    <li>All visitors must carry a valid identification card as mentioned in the registration form and produce the same on demand to the security personnel.</li>
-                                    <li>Following IDs are acceptable: Passport, Voter ID Card, Aadhaar Card, PAN Card, Driving License, Government Employee ID Card or any ID issued by Government.</li>
-                                    <li>All visitors and members must pass through a security check.</li>
-                                    <li>All visitors will be frisked before entering the premises.</li>
+                                    <li>All visitors must carry a valid identification card and produce the same on demand.</li>
+                                    <li>Following IDs are acceptable: Passport, Voter ID Card, Aadhaar Card, PAN Card, Driving License, Government Employee ID Card.</li>
+                                    <li>All visitors must pass through a security check and will be frisked before entering.</li>
                                     <li>Any kind of firearm, ammunition, inflammable material, or sharp object is strictly prohibited.</li>
                                     <li>Smoking, consumption or carrying tobacco, chewing gum, etc. is strictly prohibited.</li>
                                     <li>Water or any liquid items are not allowed inside the Digital Museum.</li>
-                                    <li>All visitors must adhere to the instructions given by Assam Legislative officials.</li>
                                     <li>Camera/Mobiles may be used only at designated places with permission from officials.</li>
-                                    <li>The guided tour will be suspended one week prior to commencement of the Assam Legislative Assembly session and remain suspended for three days after the session.</li>
                                     <li>The amount once paid will not be refunded.</li>
                                 </ul>
                             </div>
@@ -108,20 +105,20 @@ app.post('/api/send-ticket-email', async (req, res) => {
         };
 
         await sgMail.send(msg);
-        res.json({ success: true, message: 'Email sent successfully!' });
+        console.log('Email sent successfully to:', userEmail);
+        res.json({ success: true, message: 'Email sent successfully' });
+
     } catch (error) {
-        console.error('Error sending email with SendGrid:', error);
+        console.error('Error sending email:', error.response ? error.response.body : error.message);
         res.status(500).json({ success: false, error: error.message });
     }
 });
 
-// Health check endpoint
+// Health check
 app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', message: 'Email server is running' });
 });
 
-// Start server
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
-    console.log(`Make sure to configure .env file with SendGrid credentials`);
 });
