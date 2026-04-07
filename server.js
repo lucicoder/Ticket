@@ -13,14 +13,19 @@ app.use(express.json());
 app.use(express.static('.')); // Serve static files from current directory
 
 // Configure nodemailer transporter
+// Configure nodemailer transporter
 const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST || "smtp.gmail.com",
-    port: process.env.SMTP_PORT || 587,
-    secure: false, // true for 465, false for other ports
+    port: process.env.SMTP_PORT || 465,  // ← CHANGE FROM 587 TO 465
+    secure: true,  // ← CHANGE FROM false TO true
     auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASSWORD,
     },
+    connectionTimeout: 10000,  // ← ADD: 10 seconds timeout
+    socketTimeout: 10000,      // ← ADD: 10 seconds socket timeout
+    logger: true,              // ← ADD: Enable logging for debugging
+    debug: true                // ← ADD: Enable debug mode
 });
 
 // Verify transporter configuration
