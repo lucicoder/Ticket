@@ -1,0 +1,357 @@
+/* ---------------- RESET ---------------- */
+* {
+  box-sizing: border-box;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+html, body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* ---------------- PAGE BACKGROUND ---------------- */
+body {
+  margin: 0;
+  background: #f5f5f5;
+}
+
+/* ---------------- ASSAMESE GHUSA PAGE BORDER ---------------- */
+.page-wrapper {
+  min-height: 100vh;
+  border: 28px solid transparent;
+  border-image: url("../images/assamese-ghusa.png") 60 round;
+  background: #ffffff;
+}
+
+/* ---------------- TOP BAR (LOGO + NAV + LANG) ---------------- */
+/* IMPORTANT:
+   Use left: 0 and full width, but keep it visually aligned with the border look
+*/
+.top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 72px;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 10px 16px;
+  border-bottom: 1px solid #eee;
+  background: #ffffff;
+}
+
+/* ---------------- HEADER AREA (offset for fixed top bar) ---------------- */
+.header-area {
+  padding-top: 72px;
+}
+
+/* Logo */
+.logo-box img {
+  height: 52px;
+  width: auto;
+}
+
+/* Navigation links */
+.nav-links {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #8b1c1c;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 6px 10px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.nav-links a:hover {
+  background: #f3e9e9;
+}
+
+/* ---------------- LANGUAGE SWITCH (FIXED: matches your HTML) ---------------- */
+.lang-switch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+  white-space: nowrap;
+}
+
+/* Toggle switch UI */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+}
+
+/* Hide default checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background: #e6e6e6;
+  border-radius: 999px;
+  transition: 0.25s;
+  border: 1px solid #d5d5d5;
+}
+
+/* Knob */
+.slider:before {
+  content: "";
+  position: absolute;
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #ffffff;
+  border-radius: 50%;
+  transition: 0.25s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+/* Checked state */
+.switch input:checked + .slider {
+  background: #1e3a8a;
+  border-color: #1e3a8a;
+}
+
+.switch input:checked + .slider:before {
+  transform: translate(24px, -50%);
+}
+
+/* ---------------- MAIN CONTAINER ---------------- */
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px 20px 40px;
+}
+
+/* ---------------- HEADER ---------------- */
+header {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+header h1 {
+  margin: 0;
+  font-size: clamp(20px, 4vw, 28px);
+  color: #8b1c1c;
+}
+
+header p {
+  margin: 6px 0 0;
+  color: #555;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* ---------------- FORM ---------------- */
+fieldset {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  padding: 15px;
+}
+
+legend {
+  padding: 0 10px;
+  font-weight: 600;
+  color: #8b1c1c;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  outline: none;
+}
+
+input:focus,
+select:focus {
+  border-color: #8b1c1c;
+  box-shadow: 0 0 0 2px rgba(139, 28, 28, 0.12);
+}
+
+/* ---------------- RULES LIST ---------------- */
+.rules-list {
+  margin: 8px 0 0;
+  padding-left: 22px;
+}
+
+.rules-list li {
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+/* ---------------- VISITOR COUNT GRID ---------------- */
+.count-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+/* ---------------- TOTAL ---------------- */
+.total-box {
+  background: #fff7f2;
+  border-left: 5px solid #8b1c1c;
+  padding: 15px;
+  font-size: 16px;
+  margin-top: 15px;
+  border-radius: 6px;
+}
+
+/* =====================================================
+   AGREEMENT CHECKBOX – FIXED ALIGNMENT
+   ===================================================== */
+.agree-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 14px;
+  font-size: 14px;
+  color: #333;
+}
+
+/* Override global input styles ONLY for checkbox */
+.agree-box input[type="checkbox"] {
+  width: auto !important;
+  padding: 0;
+  margin: 3px 0 0 0;
+  transform: scale(1.05);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.agree-box label {
+  line-height: 1.5;
+  cursor: pointer;
+  margin: 0;
+}
+
+.agree-box a {
+  color: #1e3a8a;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.agree-box a:hover {
+  color: #8b1c1c;
+}
+
+/* ---------------- BUTTONS ---------------- */
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+/* Scope button styles safely */
+.actions button,
+button.btn-calc,
+button.btn-pay {
+  padding: 12px 18px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-calc {
+  background: #555;
+  color: #fff;
+}
+
+.btn-pay {
+  background: #8b1c1c;
+  color: #fff;
+}
+
+.btn-pay:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ---------------- FOOTER ---------------- */
+footer {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 13px;
+  color: #555;
+}
+
+/* ---------------- MOBILE ---------------- */
+@media (max-width: 700px) {
+  .page-wrapper {
+    border-width: 14px;
+  }
+
+  .top-bar {
+    height: auto;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 12px;
+  }
+
+  .header-area {
+    padding-top: 118px;
+  }
+
+  .nav-links {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .logo-box img {
+    height: 44px;
+  }
+
+  .container {
+    padding: 20px 14px 30px;
+  }
+
+  .actions button {
+    width: 100%;
+  }
+}
+
+/* ================= REQUIRED * LABELS ================= */
+.field-label{
+  display:block;
+  margin-top:10px;
+  margin-bottom:6px;
+  font-size:13px;
+  color:#555;
+  font-weight:600;
+}
+
+.req-star{
+  color:#8b1c1c;
+  font-weight:800;
+  margin-left:3px;
+}
