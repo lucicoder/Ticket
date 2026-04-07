@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ticket – Digital Museum | Assam Legislative Assembly</title>
+<link rel="stylesheet" href="assets/css/common.css">
+</head>
+
+<body>
+<div class="page-wrapper">
+
+<div class="top-bar">
+  <div class="logo-box">
+    <img src="assets/images/assam-legislative-assembly-logo.png" alt="Assam Legislative Assembly Logo">
+  </div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="rules.html">Rules</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</div>
+
+<div class="header-area">
+  <div class="container">
+
+    <header>
+      <h1>Visitor Ticket</h1>
+      <p>Digital Museum – Assam Legislative Assembly</p>
+    </header>
+
+    <fieldset>
+      <legend>Ticket Details</legend>
+
+      <div id="ticketInfo" style="line-height:1.8;"></div>
+
+      <div style="display:flex; justify-content:center; margin-top:18px;">
+        <div id="qrcode"></div>
+      </div>
+
+      <p style="text-align:center; margin-top:12px; color:#555;">
+        Show this QR at Gate No.14 for entry verification.
+      </p>
+
+      <div class="actions" style="justify-content:center;">
+        <button class="btn-calc" onclick="window.print()">Print</button>
+        <button class="btn-pay" onclick="location.href='index.html'">New Booking</button>
+      </div>
+    </fieldset>
+
+    <footer>
+      <p>© Assam Legislative Assembly – Digital Museum</p>
+    </footer>
+
+  </div>
+</div>
+
+</div>
+
+<!-- QR Library (CDN) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<script type="module">
+import { findVisitor } from "./assets/js/storage.js";
+import { sendTicketEmail, showEmailStatus } from "./assets/js/validation.js";
+
+const params = new URLSearchParams(location.search);
+const bookingId = params.get("bookingId");
+
+const info = document.getElementById("ticketInfo");
+
+if (!bookingId) {
+  info.innerHTML = "<strong>Error:</strong> Booking ID not found.";
+} else {
+  const r = findVisitor(bookingId);
+  if (!r) {
+    info.innerHTML = "<strong>Error:</strong> Booking not found on this device.";
+  } else {
+    info.innerHTML = `
+      <strong>Booking ID:</strong> ${r.bookingId}<br>
+      <strong>Name:</strong> ${r.mainContact.fullName}<br>
+      <strong>Email:</strong> ${r.mainContact.email}<br>
+      <strong>Visit Date:</strong> ${r.visitDate}<br>
+      <strong>Time Slot:</strong> ${r.timeSlot}<br>
+      <strong>Total Visitors:</strong> ${r.visitorsCount}<br>
+      <strong>Amount:</strong> ₹${r.amount}<br>
+      <strong>Status:</strong> ${r.checkedInAt ? "Checked-In" : "Not Checked-In"}
+      <div id="emailStatus" style="margin-top: 10px;"></div>
+    `;
+
+    // QR contains bookingId only (simple & robust)
+    new QRCode(document.getElementById("qrcode"), {
+      text: r.bookingId,
+      width: 220,
+      height: 220
+    });
+
+    // Send email confirmation to visitor
+    sendTicketEmail(
+      r.mainContact.email,
+      r.mainContact.fullName,
+      r.bookingId,
+      r.visitDate,
+      r.timeSlot,
+      r.visitorsCount,
+      r.amount
+    ).then(result => {
+      showEmailStatus(result.success, r.mainContact.email);
+    }).catch(error => {
+      console.error("Email sending failed:", error);
+      showEmailStatus(false, r.mainContact.email);
+    });
+  }
+}
+</script>
+
+</body>
+</html>

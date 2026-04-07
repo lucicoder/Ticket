@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Login – Digital Museum | Assam Legislative Assembly</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="assets/css/common.css">
+</head>
+
+<body>
+
+<div class="page-wrapper">
+
+<!-- ================= LOGIN SCREEN ================= -->
+<div id="loginScreen" class="container" style="max-width:420px; padding-top:120px;">
+
+  <header style="text-align:center;">
+    <img src="assets/images/assam-legislative-assembly-logo.png"
+         alt="Assam Legislative Assembly Logo"
+         style="height:70px; margin-bottom:12px;">
+    <h2>Admin Login</h2>
+    <p>Digital Museum – Assam Legislative Assembly</p>
+  </header>
+
+  <fieldset>
+    <legend>Authorized Access</legend>
+
+    <input type="text" id="adminUser" placeholder="Username" autocomplete="off">
+    <input type="password" id="adminPin" placeholder="PIN" autocomplete="off">
+
+    <div class="actions">
+      <button class="btn-pay" onclick="login()">Login</button>
+    </div>
+
+    <p id="loginError" style="color:#8b1c1c; text-align:center; display:none; margin-top:10px;">
+      Invalid credentials. Access denied.
+    </p>
+  </fieldset>
+
+</div>
+
+<!-- ================= ADMIN PANEL ================= -->
+<div id="adminPanel" style="display:none;">
+
+<!-- ================= TOP BAR ================= -->
+<div class="top-bar">
+
+  <div class="logo-box">
+    <img src="assets/images/assam-legislative-assembly-logo.png"
+         alt="Assam Legislative Assembly Logo">
+  </div>
+
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="rules.html">Rules</a>
+    <a href="contact.html">Contact</a>
+    <a href="admin.html" class="active">Admin</a>
+  </div>
+
+  <button class="btn-calc" onclick="logout()">Logout</button>
+
+</div>
+
+<!-- ================= HEADER ================= -->
+<div class="header-area">
+<div class="container">
+
+<header>
+  <h1>Administration Panel</h1>
+  <p>Registered Visitor Data (Local Storage Mode)</p>
+</header>
+
+<!-- ================= FILTERS ================= -->
+<fieldset>
+  <legend>Filters & Export</legend>
+
+  <div class="count-grid">
+    <div>
+      <label>From Date</label>
+      <input type="date" id="fromDate">
+    </div>
+
+    <div>
+      <label>To Date</label>
+      <input type="date" id="toDate">
+    </div>
+
+    <div>
+      <label>Time Slot</label>
+      <select id="slotFilter">
+        <option value="">All</option>
+        <option>10:00 – 11:00</option>
+        <option>11:00 – 12:00</option>
+        <option>12:00 – 13:00</option>
+        <option>14:00 – 15:00</option>
+        <option>16:00 – 17:00</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn-calc" id="applyBtn">Apply</button>
+    <button class="btn-pay" id="csvBtn">Download CSV</button>
+  </div>
+
+  <p>Total Records: <strong id="totalRecords">0</strong></p>
+</fieldset>
+
+<!-- ================= TABLE ================= -->
+<fieldset>
+  <legend>Visitor Records</legend>
+
+  <div style="overflow:auto;">
+    <table border="1" cellpadding="8" cellspacing="0"
+           style="width:100%; border-collapse:collapse;">
+      <thead style="background:#fff7f2;">
+        <tr>
+          <th>Booking ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Date</th>
+          <th>Slot</th>
+          <th>Adults</th>
+          <th>Child &gt;15</th>
+          <th>Child &lt;15</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+</fieldset>
+
+<footer>
+  <p>© Assam Legislative Assembly – Digital Museum</p>
+  <p>Restricted access – Authorized personnel only</p>
+</footer>
+
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- ================= LOGIN SCRIPT ================= -->
+<script>
+const ADMIN_USER = "admin";
+const ADMIN_PIN  = "ALA@2026";
+
+function login() {
+  const u = document.getElementById("adminUser").value.trim();
+  const p = document.getElementById("adminPin").value.trim();
+
+  if (u === ADMIN_USER && p === ADMIN_PIN) {
+    sessionStorage.setItem("adminLoggedIn", "true");
+    showAdmin();
+  } else {
+    document.getElementById("loginError").style.display = "block";
+  }
+}
+
+function logout() {
+  sessionStorage.removeItem("adminLoggedIn");
+  location.reload();
+}
+
+function showAdmin() {
+  document.getElementById("loginScreen").style.display = "none";
+  document.getElementById("adminPanel").style.display = "block";
+}
+
+if (sessionStorage.getItem("adminLoggedIn") === "true") {
+  showAdmin();
+}
+</script>
+
+<!-- ================= DATA LOGIC ================= -->
+<script type="module">
+import { loadVisitors } from "./assets/js/storage.js";
+
+const tbody = document.getElementById("tbody");
+const totalRecords = document.getElementById("totalRecords");
+
+const fromDate = document.getElementById("fromDate");
+const toDate = document.getElementById("toDate");
+const slotFilter = document.getElementById("slotFilter");
+
+const applyBtn = document.getElementById("applyBtn");
+const csvBtn = document.getElementById("csvBtn");
+
+function getFiltered() {
+  const data = loadVisitors();
+  return data.filter(r => {
+    if (fromDate.value && r.visitDate < fromDate.value) return false;
+    if (toDate.value && r.visitDate > toDate.value) return false;
+    if (slotFilter.value && r.timeSlot !== slotFilter.value) return false;
+    return true;
+  });
+}
+
+function render(list) {
+  tbody.innerHTML = "";
+  list.forEach(r => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${r.bookingId}</td>
+      <td>${r.fullName}</td>
+      <td>${r.email}</td>
+      <td>${r.visitDate}</td>
+      <td>${r.timeSlot}</td>
+      <td>${r.adults}</td>
+      <td>${r.childrenAbove15}</td>
+      <td>${r.childrenBelow15}</td>
+      <td>${r.amount}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+  totalRecords.textContent = list.length;
+}
+
+function downloadCSV(list) {
+  const header = ["BookingID","Name","Email","VisitDate","TimeSlot","Adults","Child>15","Child<15","Amount"];
+  const rows = list.map(r => [
+    r.bookingId, r.fullName, r.email,
+    r.visitDate, r.timeSlot,
+    r.adults, r.childrenAbove15, r.childrenBelow15, r.amount
+  ]);
+
+  const csv = [header, ...rows].map(r => r.join(",")).join("\n");
+  const blob = new Blob([csv], { type:"text/csv;charset=utf-8;" });
+
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "visitor-data.csv";
+  a.click();
+}
+
+applyBtn.onclick = () => render(getFiltered());
+csvBtn.onclick = () => downloadCSV(getFiltered());
+
+render(getFiltered());
+</script>
+
+</body>
+</html>

@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Digital Museum – Assam Legislative Assembly</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="assets/css/common.css">
+
+<style>
+/* Small validation UI (kept inside index.html so you don't need to touch css again) */
+.req-star { color:#c1121f; font-weight:700; margin-left:4px; }
+.field-error {
+  display:none;
+  margin:6px 0 0;
+  font-size:13px;
+  color:#c1121f;
+}
+.has-error {
+  border-color:#c1121f !important;
+  box-shadow: 0 0 0 2px rgba(193,18,31,0.12) !important;
+}
+</style>
+</head>
+
+<body>
+
+<div class="page-wrapper">
+
+<!-- ================= TOP BAR ================= -->
+<div class="top-bar">
+
+  <div class="logo-box">
+    <img src="assets/images/assam-legislative-assembly-logo.png"
+         alt="Assam Legislative Assembly Logo">
+  </div>
+
+  <div class="nav-links">
+    <a href="rules.html" class="i18n" data-en="Rules" data-as="নিয়ম">Rules</a>
+    <a href="contact.html" class="i18n" data-en="Contact" data-as="যোগাযোগ">Contact</a>
+    <a href="admin.html" class="i18n" data-en="Admin" data-as="প্ৰশাসন">Admin</a>
+  </div>
+
+  <div class="lang-switch">
+    <span>EN</span>
+    <label class="switch">
+      <input type="checkbox" id="langToggle">
+      <span class="slider"></span>
+    </label>
+    <span>অসমীয়া</span>
+  </div>
+
+</div>
+
+<!-- ================= HEADER ================= -->
+<div class="header-area">
+<div class="container">
+
+<header>
+  <h1 class="i18n"
+      data-en="Digital Museum, Assam Legislative Assembly"
+      data-as="ডিজিটেল মিউজিয়াম, অসম বিধানসভা">
+    Digital Museum, Assam Legislative Assembly
+  </h1>
+
+  <p class="i18n"
+     data-en="Visitor Registration & Online Payment"
+     data-as="দৰ্শক পঞ্জীয়ন আৰু অনলাইন পৰিশোধ">
+    Visitor Registration & Online Payment
+  </p>
+</header>
+
+<form id="visitorForm" novalidate>
+
+<!-- ======================================================
+     1) APPLICANT TYPE
+     ====================================================== -->
+<fieldset>
+  <legend class="i18n" data-en="Applicant Type" data-as="আবেদনকাৰীৰ ধৰণ">Applicant Type</legend>
+
+  <label class="field-label i18n" data-en="Applicant Type" data-as="আবেদনকাৰীৰ ধৰণ">
+    Applicant Type<span class="req-star">*</span>
+  </label>
+
+  <select id="applicantType" required>
+    <option value="" class="i18n" data-en="Select Applicant Type" data-as="আবেদনকাৰীৰ ধৰণ বাছনি কৰক">
+      Select Applicant Type
+    </option>
+    <option value="School" class="i18n" data-en="School" data-as="বিদ্যালয়">School</option>
+    <option value="College / University" class="i18n" data-en="College / University" data-as="কলেজ / বিশ্ববিদ্যালয়">College / University</option>
+    <option value="Organization" class="i18n" data-en="Organization" data-as="সংস্থা">Organization</option>
+    <option value="Individual" class="i18n" data-en="Individual" data-as="ব্যক্তিগত">Individual</option>
+    <option value="MLA" class="i18n" data-en="MLA" data-as="বিধায়ক (MLA)">MLA</option>
+  </select>
+  <div class="field-error" data-for="applicantType" data-en="Please fill this" data-as="অনুগ্ৰহ কৰি এইটো পূৰণ কৰক">Please fill this</div>
+
+  <!-- Applicant Extras -->
+  <div id="applicantExtras" style="margin-top:12px; display:none;">
+
+    <label class="field-label i18n" id="orgNameLabel"
+           data-en="Institute/Organization Name"
+           data-as="প্ৰতিষ্ঠান/সংস্থাৰ নাম">
+      Institute/Organization Name<span class="req-star" id="orgStar">*</span>
+    </label>
+
+    <input id="orgName" type="text"
+           placeholder="Enter name"
+           data-en-ph="Enter name"
+           data-as-ph="নাম লিখক">
+    <div class="field-error" data-for="orgName" data-en="Please fill this" data-as="অনুগ্ৰহ কৰি এইটো পূৰণ কৰক">Please fill this</div>
+
+    <div id="mlaExtras" style="display:none;">
+      <label class="field-label i18n"
+             data-en="MLA Member Of (Party/House)"
+             data-as="বিধায়ক (দল/সভা)">
+        MLA Member Of (Party/House)<span class="req-star">*</span>
+      </label>
+      <input id="mlaMemberOf" type="text"
+             placeholder="e.g., Assam Legislative Assembly / Party Name"
+             data-en-ph="e.g., Assam Legislative Assembly / Party Name"
+             data-as-ph="উদাহৰণ: অসম বিধানসভা / দলৰ নাম">
+      <div class="field-error" data-for="mlaMemberOf" data-en="Please fill this" data-as="অনুগ্ৰহ কৰি এইটো পূৰণ কৰক">Please fill this</div>
+
+      <label class="field-label i18n"
+             data-en="Constituency / Location"
+             data-as="সমষ্টি / স্থান">
+        Constituency / Location<span class="req-star">*</span>
+      </label>
+      <input id="mlaConstituency" type="text"
+             placeholder="e.g., XYZ Constituency"
+             data-en-ph="e.g., XYZ Constituency"
+             data-as-ph="উদাহৰণ: XYZ সমষ্টি">
+      <div class="field-error" data-for="mlaConstituency" data-en="Please fill this" data-as="অনুগ্ৰহ কৰি এইটো পূৰণ কৰক">Please fill this</div>
+    </div>
+
+    <label class="field-label i18n"
+           data-en="Upload ID Copy (PDF/JPG/PNG)"
+           data-as="আইডি কপি আপলোড কৰক (PDF/JPG/PNG)">
+      Upload ID Copy (PDF/JPG/PNG)<span class="req-star">*</span>
+    </label>
+    <input id="idCopyFile" type="file" accept=".pdf,.jpg,.jpeg,.png">
+    <div class="field-error" data-for="idCopyFile" data-en="Please fill this" data-as="অনুগ্ৰহ কৰি এইটো পূৰণ কৰক">Please fill this</div>
+
+    <p style="margin:8px 0 0; font-size:13px; color:#555;" class="i18n"
+       data-en="(Static website: only file name is stored. File is verified by officials.)"
+       data-as="(ষ্টেটিক ৱেবছাইট: কেৱল ফাইল-নাম সংৰক্ষণ হয়। কৰ্তৃপক্ষই পৰীক্ষা কৰে।)">
+      (Static website: only file name is stored. File is verified by officials.)
+    </p>
+  </div>
+</fieldset>
+
+<!-- ======================================================
+     2) VISIT DETAILS
+     ====================================================== -->
+<fieldset>
+  <legend class="i18n" data-en="Visit Details" data-as="ভ্ৰমণ বিৱৰণ">Visit Details</legend>
+
+  <label class="field-label i18n" data-en="Visit Date" data-as="ভ্ৰমণ তাৰিখ">
+    Visit Date<span class="req-star">*</span>
+  </label>
+  <input id="visitDate" type="date" required>
+  <div class="field-error" data-for="visitDate" data-en="Please fill this" data-as="অনুগ্ৰহ কৰি এইটো পূৰণ কৰক">Please fill this</div>
+
+  <label class="field-label i18n" data-en="Time Slot" data-as="সময়সূচী">
+    Time Slot<span class="req-star">*</span>
+  </label>
+  <select id="timeSlot" required>
+    <option value="" class="i18n" data-en="Time Slot" data-as="সময়সূচী">Time Slot</option>
+    <option value="10:00 – 11:00">10:00 – 11:00</option>
+    <option value="11:00 – 12:00">11:00 – 12:00</option>
+    <option value="12:00 – 13:00">12:00 – 13:00</option>
+    <option value="14:00 – 15:00">14:00 – 15:00</option>
+    <option value="16:00 – 17:00">16:00 – 17:00</option>
+  </select>
+  <div class="field-error" data-for="timeSlot" data-en="Please fill this" data-as="অনুগ্ৰহ কৰি এইটো পূৰণ কৰক">Please fill this</div>
+
+  <label class="field-label i18n"
+         data-en="Total Visitors (₹50 per person)"
+         data-as="মুঠ দৰ্শনাৰ্থী (প্ৰতি জন ₹৫০)">
+    Total Visitors (₹50 per person)<span class="req-star">*</span>
+  </label>
+  <input type="number"
+         id="visitorsCount"
+         min="1"
+         value="1"
+         required
+         placeholder="e.g., 5"
+         data-en-ph="e.g., 5"
+         data-as-ph="উদাহৰণ: ৫">
+  <div class="field-error" data-for="visitorsCount" data-en="Please fill this" data-as="অনুগ্ৰহ কৰি এইটো পূৰণ কৰক">Please fill this</div>
+
+  <div style="margin-top:10px; font-size:13px; color:#555;" class="i18n"
+       data-en="Rule: 1–20 visitors → enter each person’s Name + ID Type + ID Number. Above 20 → enter only 1 person’s details + upload request letter."
+       data-as="নিয়ম: ১–২০ জন → প্ৰতিজনৰ নাম + আইডি ধৰণ + আইডি নম্বৰ। ২০ জনৰ ওপৰত → কেৱল ১ জনৰ বিৱৰণ + অনুৰোধ-পত্ৰ আপলোড।">
+    Rule: 1–20 visitors → enter each person’s Name + ID Type + ID Number. Above 20 → enter only 1 person’s details + upload request letter.
+  </div>
+</fieldset>
+
+<!-- ======================================================
+     3) PERSONAL DETAILS (MAIN CONTACT)
+     ====================================================== -->
+<fieldset>
+  <legend class="i18n" data-en="Personal Details (Main Contact)" data-as="ব্যক্তিগত বিৱৰণ (মূল যোগাযোগ)">
+    Personal Details (Main Contact)
+  </legend>
+
+  <label class="field-label i18n" data-en="Full Name" data-as="সম্পূৰ্ণ নাম">
+    Full Name<span class="req-star">*</span>
+  </label>
+  <input id="fullName" type="text" required
+         placeholder="Full Name"
+         data-en-ph="Full Name"
+         data-as-ph="সম্পূৰ্ণ নাম">
+  <div class="field-error" data-for="fullName" data-en="Please fill this" data-as="অনুগ্ৰহ কৰি এইটো পূৰণ কৰক">Please fill this</div>
+
+  <label class="field-label i18n" data-en="Email Address" data-as="ইমেইল ঠিকনা">
+    Email Address<span class="req-star">*</span>
+  </label>
+  <input id="email" type="email" required
+         placeholder="example@gmail.com"
+         data-en-ph="example@gmail.com"
+         data-as-ph="উদাহৰণ: example@gmail.com">
+  <div class="field-error" data-for="email" data-en="Please fill this" data-as="অনুগ্ৰহ কৰি এইটো পূৰণ কৰক">Please fill this</div>
+
+  <label class="field-label i18n" data-en="Mobile Number" data-as="মোবাইল নম্বৰ">
+    Mobile Number<span class="req-star">*</span>
+  </label>
+  <input id="mobile" type="tel" required
+         placeholder="+91 98765 43210"
+         data-en-ph="+91 98765 43210"
+         data-as-ph="উদাহৰণ: +91 98765 43210">
+  <div class="field-error" data-for="mobile" data-en="Please fill this" data-as="অনুগ্ৰহ কৰি এইটো পূৰণ কৰক">Please fill this</div>
+
+  <label class="field-label i18n" data-en="Address" data-as="ঠিকনা">
+    Address<span class="req-star">*</span>
+  </label>
+  <input id="address" type="text" required
+         placeholder="Address"
+         data-en-ph="Address"
+         data-as-ph="ঠিকনা">
+  <div class="field-error" data-for="address" data-en="Please fill this" data-as="অনুগ্ৰহ কৰি এইটো পূৰণ কৰক">Please fill this</div>
+</fieldset>
+
+<!-- ======================================================
+     4) IDENTITY DETAILS – GROUP TABLE
+     ====================================================== -->
+<fieldset>
+  <legend class="i18n" data-en="Identity Details (Visitors)" data-as="পৰিচয় বিৱৰণ (দৰ্শনাৰ্থী)">
+    Identity Details (Visitors)
+  </legend>
+
+  <div id="tableBlock">
+    <div style="overflow:auto;">
+      <table style="width:100%; border-collapse:collapse; min-width:720px;">
+        <thead>
+          <tr>
+            <th style="border:1px solid #ddd; padding:10px; text-align:left; background:#fafafa;">
+              <span class="i18n" data-en="S.No" data-as="ক্ৰম">S.No</span>
+            </th>
+            <th style="border:1px solid #ddd; padding:10px; text-align:left; background:#fafafa;">
+              <span class="i18n" data-en="Name" data-as="নাম">Name</span><span class="req-star">*</span>
+            </th>
+            <th style="border:1px solid #ddd; padding:10px; text-align:left; background:#fafafa;">
+              <span class="i18n" data-en="ID Type" data-as="আইডি ধৰণ">ID Type</span><span class="req-star">*</span>
+            </th>
+            <th style="border:1px solid #ddd; padding:10px; text-align:left; background:#fafafa;">
+              <span class="i18n" data-en="ID Number (Numbers only)" data-as="আইডি নম্বৰ (কেৱল সংখ্যা)">ID Number (Numbers only)</span><span class="req-star">*</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody id="visitorsTbody"></tbody>
+      </table>
+    </div>
+
+    <div class="field-error" id="tableError"
+         data-en="Please fill identity details for all visitors"
+         data-as="অনুগ্ৰহ কৰি সকলো দৰ্শনাৰ্থীৰ পৰিচয় বিৱৰণ পূৰণ কৰক">
+      Please fill identity details for all visitors
+    </div>
+  </div>
+
+  <div id="above20Block" style="display:none;">
+
+    <label class="field-label i18n" data-en="Representative Name" data-as="প্ৰতিনিধিৰ নাম">
+      Representative Name<span class="req-star">*</span>
+    </label>
+    <input id="repName" type="text"
+           placeholder="Representative Full Name"
+           data-en-ph="Representative Full Name"
+           data-as-ph="প্ৰতিনিধিৰ সম্পূৰ্ণ নাম">
+    <div class="field-error" data-for="repName" data-en="Please fill this" data-as="অনুগ্ৰহ কৰি এইটো পূৰণ কৰক">Please fill this</div>
+
+    <label class="field-label i18n" data-en="Representative ID Type" data-as="প্ৰতিনিধিৰ আইডি ধৰণ">
+      Representative ID Type<span class="req-star">*</span>
+    </label>
+    <select id="repIdType">
+      <option value="" class="i18n" data-en="Select ID Type" data-as="আইডি ধৰণ বাছনি কৰক">Select ID Type</option>
+      <option value="Aadhaar Card">Aadhaar Card</option>
+      <option value="Voter ID">Voter ID</option>
+      <option value="Driving Licence">Driving Licence</option>
+      <option value="Passport">Passport</option>
+    </select>
+    <div class="field-error" data-for="repIdType" data-en="Please fill this" data-as="অনুগ্ৰহ কৰি এইটো পূৰণ কৰক">Please fill this</div>
+
+    <label class="field-label i18n" data-en="Representative ID Number" data-as="প্ৰতিনিধিৰ আইডি নম্বৰ">
+      Representative ID Number<span class="req-star">*</span>
+    </label>
+    <input id="repIdNumber" type="text"
+           inputmode="numeric"
+           pattern="[0-9]+"
+           placeholder="123456789012"
+           data-en-ph="123456789012"
+           data-as-ph="উদাহৰণ: 123456789012">
+    <div class="field-error" data-for="repIdNumber" data-en="Please fill this" data-as="অনুগ্ৰহ কৰি এইটো পূৰণ কৰক">Please fill this</div>
+
+    <label class="field-label i18n"
+           data-en="Upload Request Letter (PDF/JPG/PNG)"
+           data-as="অনুৰোধ-পত্ৰ আপলোড কৰক (PDF/JPG/PNG)">
+      Upload Request Letter (PDF/JPG/PNG)<span class="req-star">*</span>
+    </label>
+    <input id="requestLetterFile" type="file" accept=".pdf,.jpg,.jpeg,.png">
+    <div class="field-error" data-for="requestLetterFile" data-en="Please fill this" data-as="অনুগ্ৰহ কৰি এইটো পূৰণ কৰক">Please fill this</div>
+
+    <p style="margin:8px 0 0; font-size:13px; color:#555;" class="i18n"
+       data-en="For groups above 20 visitors, request letter is mandatory."
+       data-as="২০ জনৰ ওপৰত দলে অনুৰোধ-পত্ৰ বাধ্যতামূলক।">
+      For groups above 20 visitors, request letter is mandatory.
+    </p>
+  </div>
+
+</fieldset>
+
+<div class="total-box">
+  <span class="i18n" data-en="Total Payable Amount:" data-as="মুঠ পৰিশোধযোগ্য মাচুল:">
+    Total Payable Amount:
+  </span>
+  ₹ <span id="totalAmount">0</span>
+</div>
+
+<div class="agree-box">
+  <input type="checkbox" id="agreeRules">
+  <label for="agreeRules">
+    <span class="i18n" data-en="I have read and agree to the" data-as="মই পঢ়ি বুজি সন্মত হ'লোঁ">
+      I have read and agree to the
+    </span>
+    <a href="rules.html" target="_blank" class="i18n" data-en="Rules & Guidelines" data-as="নিয়ম আৰু নিৰ্দেশনা">
+      Rules & Guidelines
+    </a>
+    <span class="i18n" data-en="of the Digital Museum." data-as="ডিজিটেল মিউজিয়ামৰ।">
+      of the Digital Museum.
+    </span>
+  </label>
+</div>
+
+<div class="actions">
+  <button type="submit" class="btn-pay" id="payBtn" disabled>
+    <span class="i18n" data-en="Proceed to Payment" data-as="পৰিশোধলৈ আগবাঢ়ক">
+      Proceed to Payment
+    </span>
+  </button>
+</div>
+
+</form>
+
+<footer>
+  <p class="i18n"
+     data-en="• Fee once paid is non-refundable"
+     data-as="• এবাৰ পৰিশোধ কৰা মাচুল উভতাই দিয়া নহয়">
+    • Fee once paid is non-refundable
+  </p>
+  <p class="i18n"
+     data-en="• Original ID mandatory for entry"
+     data-as="• প্ৰৱেশৰ সময়ত মূল পৰিচয় পত্ৰ আবশ্যক">
+    • Original ID mandatory for entry
+  </p>
+  <p>© Assam Legislative Assembly – Digital Museum</p>
+</footer>
+
+</div>
+</div>
+</div>
+
+<!-- ================= LANGUAGE SWITCH SCRIPT ================= -->
+<script>
+const toggle = document.getElementById("langToggle");
+
+function setLanguage(lang) {
+  document.querySelectorAll(".i18n[data-en][data-as]").forEach(el => {
+    el.textContent = el.getAttribute(`data-${lang}`);
+  });
+  document.querySelectorAll("[data-en-ph][data-as-ph]").forEach(el => {
+    el.setAttribute("placeholder", el.getAttribute(`data-${lang}-ph`));
+  });
+
+  // translate error messages too
+  document.querySelectorAll(".field-error[data-en][data-as]").forEach(el => {
+    el.textContent = el.getAttribute(`data-${lang}`);
+  });
+
+  localStorage.setItem("lang", lang);
+}
+
+toggle.addEventListener("change", () => {
+  setLanguage(toggle.checked ? "as" : "en");
+});
+
+const savedLang = localStorage.getItem("lang") || "en";
+toggle.checked = savedLang === "as";
+setLanguage(savedLang);
+</script>
+
+<!-- ================= VALIDATION HELPERS ================= -->
+<script>
+function showError(el, msgEl) {
+  el.classList.add("has-error");
+  if (msgEl) msgEl.style.display = "block";
+}
+function hideError(el, msgEl) {
+  el.classList.remove("has-error");
+  if (msgEl) msgEl.style.display = "none";
+}
+function msgFor(id) {
+  return document.querySelector(`.field-error[data-for="${id}"]`);
+}
+function isFileChosen(fileInput) {
+  return fileInput && fileInput.files && fileInput.files.length > 0;
+}
+function attachLiveValidation(id) {
+  const el = document.getElementById(id);
+  const m = msgFor(id);
+  if (!el) return;
+
+  const eventName = (el.tagName === "SELECT" || el.type === "date" || el.type === "file") ? "change" : "input";
+  el.addEventListener(eventName, () => {
+    if (el.type === "file") {
+      if (isFileChosen(el)) hideError(el, m);
+    } else {
+      if (el.value && el.value.trim() !== "") hideError(el, m);
+    }
+  });
+}
+</script>
+
+<!-- ================= DYNAMIC APPLICANT UI + GROUP TABLE UI ================= -->
+<script>
+const applicantTypeEl = document.getElementById("applicantType");
+const applicantExtras = document.getElementById("applicantExtras");
+const orgNameLabel = document.getElementById("orgNameLabel");
+const orgNameEl = document.getElementById("orgName");
+const idCopyEl = document.getElementById("idCopyFile");
+
+const mlaExtras = document.getElementById("mlaExtras");
+const mlaMemberOfEl = document.getElementById("mlaMemberOf");
+const mlaConstituencyEl = document.getElementById("mlaConstituency");
+
+const visitorsEl = document.getElementById("visitorsCount");
+const tableBlock = document.getElementById("tableBlock");
+const above20Block = document.getElementById("above20Block");
+const visitorsTbody = document.getElementById("visitorsTbody");
+const tableError = document.getElementById("tableError");
+
+function updateApplicantUI() {
+  const v = applicantTypeEl.value;
+
+  applicantExtras.style.display = "none";
+  mlaExtras.style.display = "none";
+
+  orgNameEl.required = false;
+  idCopyEl.required = false;
+  mlaMemberOfEl.required = false;
+  mlaConstituencyEl.required = false;
+
+  // clear errors when switching
+  hideError(orgNameEl, msgFor("orgName"));
+  hideError(idCopyEl, msgFor("idCopyFile"));
+  hideError(mlaMemberOfEl, msgFor("mlaMemberOf"));
+  hideError(mlaConstituencyEl, msgFor("mlaConstituency"));
+
+  if (v === "School" || v === "College / University" || v === "Organization" || v === "MLA") {
+    applicantExtras.style.display = "block";
+    idCopyEl.required = true;
+
+    if (v === "School") {
+      orgNameLabel.setAttribute("data-en", "School Name");
+      orgNameLabel.setAttribute("data-as", "বিদ্যালয়ৰ নাম");
+      orgNameEl.required = true;
+      mlaExtras.style.display = "none";
+    } else if (v === "College / University") {
+      orgNameLabel.setAttribute("data-en", "College / University Name");
+      orgNameLabel.setAttribute("data-as", "কলেজ / বিশ্ববিদ্যালয়ৰ নাম");
+      orgNameEl.required = true;
+      mlaExtras.style.display = "none";
+    } else if (v === "Organization") {
+      orgNameLabel.setAttribute("data-en", "Organization Name");
+      orgNameLabel.setAttribute("data-as", "সংস্থাৰ নাম");
+      orgNameEl.required = true;
+      mlaExtras.style.display = "none";
+    } else if (v === "MLA") {
+      orgNameLabel.setAttribute("data-en", "MLA Office / Reference (optional)");
+      orgNameLabel.setAttribute("data-as", "বিধায়কৰ কাৰ্যালয় / ৰেফাৰেন্স (ঐচ্ছিক)");
+      orgNameEl.required = false;
+
+      mlaExtras.style.display = "block";
+      mlaMemberOfEl.required = true;
+      mlaConstituencyEl.required = true;
+    }
+  }
+
+  // re-apply language texts
+  const lang = localStorage.getItem("lang") || "en";
+  document.querySelectorAll(".i18n[data-en][data-as]").forEach(el => {
+    el.textContent = el.getAttribute(`data-${lang}`);
+  });
+}
+
+function idTypeOptionsHtml() {
+  return `
+    <option value="">Select</option>
+    <option value="Aadhaar Card">Aadhaar Card</option>
+    <option value="Voter ID">Voter ID</option>
+    <option value="Driving Licence">Driving Licence</option>
+    <option value="Passport">Passport</option>
+  `;
+}
+
+function buildTableRows(count) {
+  visitorsTbody.innerHTML = "";
+  hideError(tableBlock, tableError);
+
+  const n = Math.min(20, Math.max(1, count));
+
+  for (let i = 1; i <= n; i++) {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td style="border:1px solid #ddd; padding:10px;">${i}</td>
+      <td style="border:1px solid #ddd; padding:10px;">
+        <input type="text" class="v-name" placeholder="Person ${i} Name" style="width:100%; padding:10px;">
+      </td>
+      <td style="border:1px solid #ddd; padding:10px;">
+        <select class="v-idtype" style="width:100%; padding:10px;">
+          ${idTypeOptionsHtml()}
+        </select>
+      </td>
+      <td style="border:1px solid #ddd; padding:10px;">
+        <input type="text" class="v-idnum" inputmode="numeric" pattern="[0-9]+"
+               placeholder="123456789012" style="width:100%; padding:10px;">
+      </td>
+    `;
+    visitorsTbody.appendChild(tr);
+  }
+}
+
+function updateGroupIdentityUI() {
+  const people = Number(visitorsEl.value) || 1;
+
+  // clear rep block errors if hiding
+  if (people <= 20) {
+    ["repName","repIdType","repIdNumber","requestLetterFile"].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) hideError(el, msgFor(id));
+    });
+  } else {
+    hideError(tableBlock, tableError);
+  }
+
+  if (people > 20) {
+    tableBlock.style.display = "none";
+    above20Block.style.display = "block";
+    buildTableRows(1);
+  } else {
+    above20Block.style.display = "none";
+    tableBlock.style.display = "block";
+    buildTableRows(people);
+  }
+}
+
+applicantTypeEl.addEventListener("change", updateApplicantUI);
+visitorsEl.addEventListener("input", updateGroupIdentityUI);
+
+// attach live validation
+[
+  "applicantType","orgName","idCopyFile","mlaMemberOf","mlaConstituency",
+  "visitDate","timeSlot","visitorsCount",
+  "fullName","email","mobile","address",
+  "repName","repIdType","repIdNumber","requestLetterFile"
+].forEach(attachLiveValidation);
+
+// init
+updateApplicantUI();
+updateGroupIdentityUI();
+</script>
+
+<!-- ================= CAPACITY LOCK + SAVE + TOTAL + REDIRECT ================= -->
+<script type="module">
+import {
+  saveVisitor,
+  generateBookingId,
+  getSlotUsed,
+  addSlotUsed
+} from "./assets/js/storage.js";
+
+const SLOT_CAPACITY = 50;
+const PRICE_PER_VISITOR = 50;
+
+const visitorsInput = document.getElementById("visitorsCount");
+const totalSpan = document.getElementById("totalAmount");
+const agreeCheckbox = document.getElementById("agreeRules");
+const payButton = document.getElementById("payBtn");
+
+const visitDateEl = document.getElementById("visitDate");
+const timeSlotEl = document.getElementById("timeSlot");
+
+function getPeopleCount() {
+  return Number(visitorsInput.value) || 0;
+}
+
+function calculateTotal() {
+  const people = getPeopleCount();
+  const total = people * PRICE_PER_VISITOR;
+  totalSpan.textContent = total;
+  payButton.disabled = !(total > 0 && agreeCheckbox.checked);
+}
+
+function refreshSlotAvailability() {
+  const date = visitDateEl.value;
+  if (!date) return;
+
+  [...timeSlotEl.options].forEach(opt => {
+    const slot = opt.value;
+    if (!slot) return;
+
+    const used = getSlotUsed(date, slot);
+    const remaining = Math.max(0, SLOT_CAPACITY - used);
+
+    opt.disabled = remaining <= 0;
+    opt.textContent = `${slot} (Remaining: ${remaining})`;
+  });
+}
+
+visitDateEl.addEventListener("change", () => {
+  timeSlotEl.value = "";
+  refreshSlotAvailability();
+});
+
+visitorsInput.addEventListener("input", calculateTotal);
+agreeCheckbox.addEventListener("change", calculateTotal);
+
+function validateRequiredField(id) {
+  const el = document.getElementById(id);
+  const m = document.querySelector(`.field-error[data-for="${id}"]`);
+  if (!el) return true;
+
+  if (el.type === "file") {
+    if (!el.required) return true;
+    if (!el.files || el.files.length === 0) {
+      showError(el, m);
+      return false;
+    }
+    hideError(el, m);
+    return true;
+  }
+
+  const value = (el.value || "").trim();
+  if (!value) {
+    showError(el, m);
+    return false;
+  }
+  hideError(el, m);
+  return true;
+}
+
+function validateTablePeople(people) {
+  const rows = [...document.querySelectorAll("#visitorsTbody tr")];
+  const needed = Math.min(20, people);
+
+  for (let i = 0; i < needed; i++) {
+    const nameEl = rows[i].querySelector(".v-name");
+    const idTypeEl = rows[i].querySelector(".v-idtype");
+    const idNumEl = rows[i].querySelector(".v-idnum");
+
+    const name = (nameEl.value || "").trim();
+    const idType = (idTypeEl.value || "").trim();
+    const idNum = (idNumEl.value || "").trim();
+
+    // reset row styles first
+    nameEl.classList.remove("has-error");
+    idTypeEl.classList.remove("has-error");
+    idNumEl.classList.remove("has-error");
+
+    if (!name || !idType || !idNum || !/^\d+$/.test(idNum)) {
+      showError(tableBlock, tableError);
+      if (!name) nameEl.classList.add("has-error");
+      if (!idType) idTypeEl.classList.add("has-error");
+      if (!idNum || !/^\d+$/.test(idNum)) idNumEl.classList.add("has-error");
+      return { ok:false, data:null };
+    }
+  }
+
+  hideError(tableBlock, tableError);
+
+  const data = rows.slice(0, needed).map((r, idx) => ({
+    sNo: idx + 1,
+    name: r.querySelector(".v-name").value.trim(),
+    idType: r.querySelector(".v-idtype").value.trim(),
+    idNumber: r.querySelector(".v-idnum").value.trim()
+  }));
+
+  return { ok:true, data };
+}
+
+document.getElementById("visitorForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  // clear table error each submit
+  hideError(document.getElementById("tableBlock"), document.getElementById("tableError"));
+
+  const people = getPeopleCount();
+  if (people <= 0) {
+    validateRequiredField("visitorsCount");
+    document.getElementById("visitorsCount").focus();
+    return;
+  }
+
+  // Validate main required fields in flow order (focus first error)
+  const applicantType = document.getElementById("applicantType").value;
+
+  const checkList = [
+    "applicantType"
+  ];
+
+  // applicant extra rules
+  if (applicantType === "School" || applicantType === "College / University" || applicantType === "Organization") {
+    checkList.push("orgName","idCopyFile");
+  }
+  if (applicantType === "MLA") {
+    checkList.push("idCopyFile","mlaMemberOf","mlaConstituency");
+  }
+
+  checkList.push(
+    "visitDate","timeSlot","visitorsCount",
+    "fullName","email","mobile","address"
+  );
+
+  // If >20 add rep fields
+  if (people > 20) {
+    checkList.push("repName","repIdType","repIdNumber","requestLetterFile");
+  }
+
+  for (const id of checkList) {
+    const ok = validateRequiredField(id);
+    if (!ok) {
+      document.getElementById(id).focus();
+      return;
+    }
+  }
+
+  // agreement
+  const total = Number(totalSpan.textContent) || 0;
+  if (total <= 0 || !agreeCheckbox.checked) {
+    alert("Please agree to the Rules & Guidelines.");
+    return;
+  }
+
+  // capacity check
+  const date = visitDateEl.value;
+  const slot = timeSlotEl.value;
+
+  const used = getSlotUsed(date, slot);
+  const remaining = SLOT_CAPACITY - used;
+
+  if (people > remaining) {
+    alert(`Slot is almost full.\nRemaining seats: ${Math.max(0, remaining)}\nPlease reduce visitors or choose another slot.`);
+    refreshSlotAvailability();
+    return;
+  }
+
+  // group identity validation
+  let identityPayload = [];
+  let repPayload = null;
+  let requestLetterFileName = null;
+
+  if (people > 20) {
+    const repName = document.getElementById("repName").value.trim();
+    const repIdType = document.getElementById("repIdType").value.trim();
+    const repIdNumber = document.getElementById("repIdNumber").value.trim();
+
+    if (!/^\d+$/.test(repIdNumber)) {
+      showError(document.getElementById("repIdNumber"), msgFor("repIdNumber"));
+      document.getElementById("repIdNumber").focus();
+      return;
+    }
+
+    const reqFile = document.getElementById("requestLetterFile");
+    requestLetterFileName = reqFile.files[0].name;
+
+    repPayload = { name: repName, idType: repIdType, idNumber: repIdNumber };
+  } else {
+    const tableCheck = validateTablePeople(people);
+    if (!tableCheck.ok) {
+      // scroll to table
+      document.getElementById("tableBlock").scrollIntoView({ behavior:"smooth", block:"start" });
+      return;
+    }
+    identityPayload = tableCheck.data;
+  }
+
+  const idCopyFile = document.getElementById("idCopyFile");
+
+  const record = {
+    bookingId: generateBookingId(),
+    createdAt: new Date().toISOString(),
+    checkedInAt: null,
+
+    applicantType,
+    orgName: (document.getElementById("orgName").value || "").trim() || null,
+    mlaMemberOf: (document.getElementById("mlaMemberOf")?.value || "").trim() || null,
+    mlaConstituency: (document.getElementById("mlaConstituency")?.value || "").trim() || null,
+    idCopyFileName: (idCopyFile.required && idCopyFile.files && idCopyFile.files[0]) ? idCopyFile.files[0].name : null,
+
+    visitDate: date,
+    timeSlot: slot,
+    visitorsCount: people,
+    amount: total,
+
+    mainContact: {
+      fullName: document.getElementById("fullName").value.trim(),
+      email: document.getElementById("email").value.trim(),
+      mobile: document.getElementById("mobile").value.trim(),
+      address: document.getElementById("address").value.trim()
+    },
+
+    visitorsIdentityList: identityPayload,
+    representative: repPayload,
+    requestLetterFileName
+  };
+
+  addSlotUsed(date, slot, people);
+  saveVisitor(record);
+
+  refreshSlotAvailability();
+  window.location.href = `ticket.html?bookingId=${encodeURIComponent(record.bookingId)}`;
+});
+
+// initial
+calculateTotal();
+refreshSlotAvailability();
+</script>
+
+</body>
+</html>

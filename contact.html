@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Contact – Digital Museum | Assam Legislative Assembly</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="assets/css/common.css">
+</head>
+
+<body>
+
+<div class="page-wrapper">
+
+<!-- ================= TOP BAR ================= -->
+<div class="top-bar">
+
+  <div class="logo-box">
+    <img src="assets/images/assam-legislative-assembly-logo.png"
+         alt="Assam Legislative Assembly Logo">
+  </div>
+
+  <div class="nav-links">
+    <a href="index.html" class="i18n" data-en="Home" data-as="হোম">Home</a>
+    <a href="rules.html" class="i18n" data-en="Rules" data-as="নিয়ম">Rules</a>
+    <a href="contact.html" class="active i18n" data-en="Contact" data-as="যোগাযোগ">Contact</a>
+    <a href="admin.html" class="i18n" data-en="Admin" data-as="প্ৰশাসন">Admin</a>
+  </div>
+
+  <!-- LANGUAGE SWITCH (same as index + rules) -->
+  <div class="lang-switch">
+    <span>EN</span>
+    <label class="switch">
+      <input type="checkbox" id="langToggle">
+      <span class="slider"></span>
+    </label>
+    <span>অসমীয়া</span>
+  </div>
+
+</div>
+
+<!-- ================= HEADER AREA ================= -->
+<div class="header-area">
+  <div class="container">
+
+    <header>
+      <h1 class="i18n"
+          data-en="Digital Museum, Assam Legislative Assembly"
+          data-as="ডিজিটেল মিউজিয়াম, অসম বিধানসভা">
+        Digital Museum, Assam Legislative Assembly
+      </h1>
+
+      <p class="i18n"
+         data-en="Contact Information"
+         data-as="যোগাযোগৰ তথ্য">
+        Contact Information
+      </p>
+    </header>
+
+    <!-- ================= CONTENT ================= -->
+
+    <!-- ADDRESS -->
+    <fieldset>
+      <legend class="i18n"
+              data-en="Official Address"
+              data-as="কাৰ্যালয়ৰ ঠিকনা">
+        Official Address
+      </legend>
+
+      <p style="text-align:center; font-size:16px; line-height:1.8;">
+        <strong class="i18n"
+                data-en="ASSAM LEGISLATIVE ASSEMBLY"
+                data-as="অসম বিধানসভা">
+          ASSAM LEGISLATIVE ASSEMBLY
+        </strong>
+        <br>
+        <span class="i18n"
+              data-en="Dispur, Guwahati, Assam, India"
+              data-as="দিছপুৰ, গুৱাহাটী, অসম, ভাৰত">
+          Dispur, Guwahati, Assam, India
+        </span>
+        <br>
+        <strong class="i18n" data-en="PIN:" data-as="পিন:">PIN:</strong>
+        <span class="i18n" data-en="781006" data-as="৭৮১০০৬">781006</span>
+      </p>
+
+      <div style="margin-top:20px; text-align:center;">
+        <iframe
+          src="https://www.google.com/maps?q=Assam%20Legislative%20Assembly%20Dispur&output=embed"
+          width="100%"
+          height="280"
+          style="border:2px solid #8b1c1c; border-radius:8px;"
+          loading="lazy">
+        </iframe>
+      </div>
+    </fieldset>
+
+    <!-- COMMUNICATION -->
+    <fieldset>
+      <legend class="i18n"
+              data-en="Communication"
+              data-as="যোগাযোগ">
+        Communication
+      </legend>
+
+      <p style="text-align:center; font-size:16px;">
+        <strong class="i18n" data-en="Email:" data-as="ই-মেইল:">Email:</strong>
+        <br>
+        <a href="mailto:legislative-asm@nic.in"
+           style="color:#8b1c1c; font-weight:600; text-decoration:none;">
+          legislative-asm@nic.in
+        </a>
+      </p>
+
+      <p class="i18n"
+         data-en="Helpline available during official working hours"
+         data-as="সহায়তা কেৱল কাৰ্যালয় সময়ত উপলব্ধ"
+         style="text-align:center; margin-top:12px; color:#555;">
+        Helpline available during official working hours
+      </p>
+    </fieldset>
+
+    <footer>
+      <p>© Assam Legislative Assembly – Digital Museum</p>
+      <p class="i18n"
+         data-en="Designed & Developed for Official Use"
+         data-as="আধিকাৰিক ব্যৱহাৰৰ বাবে ডিজাইন কৰা হৈছে">
+        Designed & Developed for Official Use
+      </p>
+    </footer>
+
+  </div>
+</div>
+
+<!-- ================= LANGUAGE SWITCH SCRIPT ================= -->
+<script>
+const toggle = document.getElementById("langToggle");
+
+function setLanguage(lang) {
+  document.querySelectorAll(".i18n[data-en][data-as]").forEach(el => {
+    el.textContent = el.getAttribute(`data-${lang}`);
+  });
+  localStorage.setItem("lang", lang);
+}
+
+toggle.addEventListener("change", () => {
+  setLanguage(toggle.checked ? "as" : "en");
+});
+
+const savedLang = localStorage.getItem("lang") || "en";
+toggle.checked = savedLang === "as";
+setLanguage(savedLang);
+</script>
+
+</body>
+</html>

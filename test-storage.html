@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Storage</title>
+</head>
+<body>
+    <h1>Storage Test</h1>
+    <div id="output"></div>
+
+    <script type="module">
+        import { loadVisitors } from "./assets/js/storage.js";
+        
+        const visitors = loadVisitors();
+        const output = document.getElementById("output");
+        
+        if (visitors.length === 0) {
+            output.innerHTML = "<p>No visitors found in localStorage</p>";
+        } else {
+            output.innerHTML = "<h2>Found " + visitors.length + " visitor(s):</h2>";
+            visitors.forEach(v => {
+                output.innerHTML += `
+                    <div style="border: 1px solid #ccc; padding: 10px; margin: 10px 0;">
+                        <strong>Booking ID:</strong> ${v.bookingId}<br>
+                        <strong>Name:</strong> ${v.mainContact.fullName}<br>
+                        <strong>Email:</strong> ${v.mainContact.email}<br>
+                        <strong>Date:</strong> ${v.visitDate}<br>
+                        <strong>Time:</strong> ${v.timeSlot}<br>
+                        <strong>Visitors:</strong> ${v.visitorsCount}<br>
+                        <strong>Amount:</strong> ₹${v.amount}
+                    </div>
+                `;
+            });
+        }
+    </script>
+</body>
+</html>

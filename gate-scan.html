@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Gate Scan – Digital Museum | Assam Legislative Assembly</title>
+<link rel="stylesheet" href="assets/css/common.css">
+</head>
+
+<body>
+<div class="page-wrapper">
+
+<div class="top-bar">
+  <div class="logo-box">
+    <img src="assets/images/assam-legislative-assembly-logo.png" alt="Assam Legislative Assembly Logo">
+  </div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="admin.html">Admin</a>
+  </div>
+</div>
+
+<div class="header-area">
+  <div class="container">
+
+    <header>
+      <h1>Gate QR Scan</h1>
+      <p>Use this at Gate No.14 for entry verification</p>
+    </header>
+
+    <fieldset>
+      <legend>Scanner</legend>
+
+      <div id="reader" style="max-width:520px; margin:0 auto;"></div>
+
+      <p id="scanMsg" style="text-align:center; margin-top:12px; color:#555;">
+        Point the camera at the visitor QR code.
+      </p>
+    </fieldset>
+
+    <fieldset>
+      <legend>Result</legend>
+      <div id="resultBox" style="line-height:1.8;"></div>
+      <div class="actions">
+        <button class="btn-calc" id="resumeBtn" disabled>Resume Scan</button>
+      </div>
+    </fieldset>
+
+    <footer>
+      <p>© Assam Legislative Assembly – Digital Museum</p>
+    </footer>
+
+  </div>
+</div>
+
+</div>
+
+<!-- Scanner Library (CDN) -->
+<script src="https://unpkg.com/html5-qrcode"></script>
+
+<script type="module">
+import { findVisitor, updateVisitor } from "./assets/js/storage.js";
+
+const resultBox = document.getElementById("resultBox");
+const scanMsg = document.getElementById("scanMsg");
+const resumeBtn = document.getElementById("resumeBtn");
+
+let scanner = null;
+
+function showResult(html) {
+  resultBox.innerHTML = html;
+}
+
+async function startScan() {
+  scanner = new Html5Qrcode("reader");
+
+  const config = { fps: 10, qrbox: 250 };
+
+  try {
+    await scanner.start(
+      { facingMode: "environment" },
+      config,
+      onScanSuccess,
+      onScanFailure
+    );
+    scanMsg.textContent = "Scanning…";
+  } catch (e) {
+    scanMsg.textContent = "Camera access failed. Please allow camera permission.";
+    showResult(`<strong>Error:</strong> ${String(e)}`);
+  }
+}
+
+async function stopScan() {
+  if (scanner) {
+    try { await scanner.stop(); } catch {}
+    try { await scanner.clear(); } catch {}
+  }
+}
+
+async function onScanSuccess(decodedText) {
+  // We stored bookingId as QR text
+  const bookingId = String(decodedText || "").trim();
+
+  await stopScan();
+  resumeBtn.disabled = false;
+
+  const r = findVisitor(bookingId);
+  if (!r) {
+    showResult(`
+      <strong>Not Found:</strong> ${bookingId}<br>
+      This booking is not available on this device.<br>
+      <span style="color:#8b1c1c; font-weight:600;">If you use multiple counters, connect to a backend for central verification.</span>
+    `);
+    return;
+  }
+
+  if (r.checkedInAt) {
+    showResult(`
+      <strong>Already Checked-In</strong><br>
+      Booking ID: ${r.bookingId}<br>
+      Name: ${r.fullName}<br>
+      Date: ${r.visitDate} | Slot: ${r.timeSlot}<br>
+      Checked-In At: ${r.checkedInAt}
+    `);
+    return;
+  }
+
+  const now = new Date().toISOString();
+  updateVisitor(bookingId, { checkedInAt: now });
+
+  showResult(`
+    <strong style="color:green;">Entry Approved ✅</strong><br>
+    Booking ID: ${r.bookingId}<br>
+    Name: ${r.fullName}<br>
+    Date: ${r.visitDate} | Slot: ${r.timeSlot}<br>
+    Visitors: ${r.peopleCount}<br>
+    Amount: ₹${r.amount}<br>
+    Checked-In At: ${now}
+  `);
+}
+
+function onScanFailure() {
+  // keep silent to avoid spam
+}
+
+resumeBtn.addEventListener("click", async () => {
+  resumeBtn.disabled = true;
+  showResult("");
+  await startScan();
+});
+
+// Start scanning on load
+startScan();
+</script>
+
+</body>
+</html>
